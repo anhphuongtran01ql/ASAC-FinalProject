@@ -10,6 +10,11 @@ let getHomePage = async (req, res) => {
   }
 };
 
+let getUsers = async (req, res) => {
+  return res.render("users.ejs");
+};
+
 module.exports = {
   getHomePage: getHomePage,
+  getUsers: getUsers,
 };
