@@ -16,7 +16,8 @@ let getUsers = async (req, res) => {
 };
 
 let postUser = async (req, res) => {
-  await userService.createNewUser(req.body);
+  let message = await userService.createNewUser(req.body);
+  console.log("message: ", message);
   return res.send("post new user successful!");
 }
 
