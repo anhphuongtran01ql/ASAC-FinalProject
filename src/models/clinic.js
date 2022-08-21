@@ -1,4 +1,4 @@
-"use strict";STRING
+"use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Clinic extends Model {
