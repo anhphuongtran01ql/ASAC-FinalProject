@@ -4,11 +4,24 @@ import db from "../models/index";
 //generate a salt and hash synchronously - set value for saltRounds is 10
 const salt = bcrypt.genSaltSync(10);
 
-let createNewUser = async (data) => {
+let getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      let users = db.User.findAll({
+        raw: true,
+      });
+      resolve(users);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let createNewUser = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       let password = await hashUserPassword(data.password);
-      await db.User.create({
+      let user = await db.User.create({
         email: data.email,
         password: password,
         firstName: data.firstName,
@@ -18,11 +31,10 @@ let createNewUser = async (data) => {
         gender: data.gender === 1 ? true : false,
         roleId: data.roleId,
       });
-      resolve("Create successfully");
+      resolve(user);
     } catch (e) {
       reject(e);
     }
-    console.log("data from services", data);
   });
 };
 
@@ -38,5 +50,6 @@ let hashUserPassword = (password) => {
 };
 
 module.exports = {
+  getAllUsers: getAllUsers,
   createNewUser: createNewUser,
 };
