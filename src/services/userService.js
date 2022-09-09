@@ -69,7 +69,6 @@ let hashUserPassword = (password) => {
 let editUserInfo = (id, data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("data id", id);
       let user = await db.User.findOne({
         where: { id: id },
       });
@@ -94,9 +93,26 @@ let editUserInfo = (id, data) => {
   });
 };
 
+let deleteUser = async (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({ where: { id: id } });
+      if (user) {
+        await user.destroy();
+        resolve({ status: 200, message: "User deleted successfully!" });
+      } else {
+        resolve({ status: 404, message: "User not found!" });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   getAllUsers: getAllUsers,
   getUserDetail: getUserDetail,
   createNewUser: createNewUser,
   editUserInfo: editUserInfo,
+  deleteUser: deleteUser,
 };
