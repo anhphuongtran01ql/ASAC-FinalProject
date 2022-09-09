@@ -16,13 +16,20 @@ let getUser = async (req, res) => {
   }
 };
 
-let postUser = async (req, res) => {
+let createUser = async (req, res) => {
   let data = await userService.createNewUser(req.body);
   return res.send(data);
+};
+
+let editUser = async (req, res) => {
+  let id = req.query.id;
+  let updatedUser = await userService.editUserInfo(id, req.body);
+  return res.send(updatedUser);
 };
 
 module.exports = {
   getUsers: getUsers,
   getUser: getUser,
-  postUser: postUser,
+  createUser: createUser,
+  editUser: editUser,
 };
