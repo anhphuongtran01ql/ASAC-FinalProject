@@ -1,4 +1,3 @@
-import db from "../models/index";
 import userService from "../services/userService";
 
 let getUsers = async (req, res) => {
@@ -27,9 +26,20 @@ let editUser = async (req, res) => {
   return res.send(updatedUser);
 };
 
+let deleteUser = async (req, res) => {
+  let id = req.query.id;
+  if (id) {
+    let deleteSuccess = await userService.deleteUser(id);
+    return res.send(deleteSuccess);
+  } else {
+    return res.send({ status: 404, message: "User not found!" });
+  }
+};
+
 module.exports = {
   getUsers: getUsers,
   getUser: getUser,
   createUser: createUser,
   editUser: editUser,
+  deleteUser: deleteUser,
 };
