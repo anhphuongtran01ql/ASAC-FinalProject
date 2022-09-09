@@ -17,6 +17,23 @@ let getAllUsers = () => {
   });
 };
 
+let getUserDetail = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: id },
+      });
+      if (user) {
+        resolve(user);
+      } else {
+        resolve({ status: 404, message: "User not found!" });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 let createNewUser = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -51,5 +68,6 @@ let hashUserPassword = (password) => {
 
 module.exports = {
   getAllUsers: getAllUsers,
+  getUserDetail: getUserDetail,
   createNewUser: createNewUser,
 };
