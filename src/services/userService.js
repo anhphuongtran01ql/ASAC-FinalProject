@@ -109,10 +109,64 @@ let deleteUser = async (id) => {
   });
 };
 
+let checkUserEmail = (email) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({ where: { email: email } });
+      if (user) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let handleLogin = (email, password) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let userData = {};
+      let isExist = await checkUserEmail(email);
+
+      if (isExist) {
+        let user = await db.User.findOne({
+          where: { email: email },
+          raw: true,
+        });
+        if (user) {
+          let checkPassword = await bcrypt.compareSync(password, user.password);
+          if (checkPassword) {
+            userData.errorCode = 0;
+            userData.message = "OK!";
+
+            delete user.password;
+            userData.user = user;
+          } else {
+            userData.errorCode = 3;
+            userData.message = "Password is incorrect!";
+          }
+        } else {
+          userData.errorCode = 4;
+          userData.message = "User does not exist!";
+        }
+      } else {
+        userData.errorCode = 2;
+        userData.message = "Email does not exist. Please try again!";
+      }
+      resolve(userData);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   getAllUsers: getAllUsers,
   getUserDetail: getUserDetail,
   createNewUser: createNewUser,
   editUserInfo: editUserInfo,
   deleteUser: deleteUser,
+  handleLogin: handleLogin,
 };

@@ -36,10 +36,31 @@ let deleteUser = async (req, res) => {
   }
 };
 
+let handleLogin = async (req, res) => {
+  let email = req.body.email;
+  let password = req.body.password;
+
+  if (!email || !password) {
+    return res.status(500).json({
+      errorCode: 1,
+      message: "Invalid email or password!",
+    });
+  } else {
+    let userData = await userService.handleLogin(email, password);
+
+    return res.status(200).json({
+      errorCode: userData.errorCode,
+      message: userData.message,
+      user: userData.user ? userData.user : {},
+    });
+  }
+};
+
 module.exports = {
   getUsers: getUsers,
   getUser: getUser,
   createUser: createUser,
   editUser: editUser,
   deleteUser: deleteUser,
+  handleLogin: handleLogin,
 };

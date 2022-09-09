@@ -10,6 +10,8 @@ let initWebRoutes = (app) => {
   router.put("/edit-user", userController.editUser);
   router.get("/delete-user", userController.deleteUser);
 
+  router.post("/login", userController.handleLogin);
+
   return app.use("/", router);
 };
 
