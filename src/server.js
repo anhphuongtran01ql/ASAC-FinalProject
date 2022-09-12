@@ -4,11 +4,12 @@ import viewEngine from "./config/viewEngine";
 import initWebRoutes from "./route/web";
 import connectDB from "./config/connectDB";
 require("dotenv").config();
+import cors from "cors";
 
 let app = express();
 
 //config app
-
+app.use(cors({ origin: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
