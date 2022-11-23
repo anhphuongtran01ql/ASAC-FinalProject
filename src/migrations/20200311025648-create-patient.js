@@ -1,46 +1,57 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('Users', {
+        return queryInterface.createTable('Patients', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
+            doctorId: {
+                allowNull: false,
+                type: Sequelize.INTEGER
+            },
+            statusId: {
+                allowNull: false,
+                type: Sequelize.INTEGER
+            },
             name: {
-                type: Sequelize.STRING
-            },
-            email: {
-                type: Sequelize.STRING,
-                unique: true
-            },
-            password: {
-                type: Sequelize.STRING
-            },
-            address: {
                 type: Sequelize.STRING
             },
             phone: {
                 type: Sequelize.STRING
             },
-            avatar: {
+            dateBooking: {
+                type: Sequelize.STRING
+            },
+            timeBooking: {
+                type: Sequelize.STRING
+            },
+            email: {
                 type: Sequelize.STRING
             },
             gender: {
-                type: Sequelize.STRING,
-                defaultValue: 'male'
+                type: Sequelize.STRING
+            },
+            year: {
+                type: Sequelize.STRING
+            },
+            address: {
+                type: Sequelize.TEXT
             },
             description: {
                 type: Sequelize.TEXT
             },
-            roleId: {
+            isSentForms: {
+                type: Sequelize.BOOLEAN,
                 allowNull: false,
-                type: Sequelize.INTEGER
+                defaultValue: false
             },
-            isActive: {
-                type: Sequelize.TINYINT(1),
-                defaultValue: true
+            isTakeCare: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
             },
             createdAt: {
                 allowNull: false,
@@ -57,6 +68,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('Users');
+        return queryInterface.dropTable('Patients');
     }
 };

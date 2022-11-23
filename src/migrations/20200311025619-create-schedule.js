@@ -1,46 +1,28 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('Users', {
+        return queryInterface.createTable('Schedules', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            name: {
-                type: Sequelize.STRING
-            },
-            email: {
-                type: Sequelize.STRING,
-                unique: true
-            },
-            password: {
-                type: Sequelize.STRING
-            },
-            address: {
-                type: Sequelize.STRING
-            },
-            phone: {
-                type: Sequelize.STRING
-            },
-            avatar: {
-                type: Sequelize.STRING
-            },
-            gender: {
-                type: Sequelize.STRING,
-                defaultValue: 'male'
-            },
-            description: {
-                type: Sequelize.TEXT
-            },
-            roleId: {
+            doctorId: {
                 allowNull: false,
                 type: Sequelize.INTEGER
             },
-            isActive: {
-                type: Sequelize.TINYINT(1),
-                defaultValue: true
+            date: {
+                type: Sequelize.STRING
+            },
+            time: {
+                type: Sequelize.STRING
+            },
+            maxBooking: {
+                type: Sequelize.STRING
+            },
+            sumBooking: {
+                type: Sequelize.STRING
             },
             createdAt: {
                 allowNull: false,
@@ -53,10 +35,10 @@ module.exports = {
             deletedAt: {
                 allowNull: true,
                 type: Sequelize.DATE
-            }
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('Users');
+        return queryInterface.dropTable('Schedules');
     }
 };

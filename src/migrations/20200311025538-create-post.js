@@ -1,46 +1,44 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('Users', {
+        return queryInterface.createTable('Posts', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            name: {
+            title: {
                 type: Sequelize.STRING
             },
-            email: {
-                type: Sequelize.STRING,
-                unique: true
-            },
-            password: {
-                type: Sequelize.STRING
-            },
-            address: {
-                type: Sequelize.STRING
-            },
-            phone: {
-                type: Sequelize.STRING
-            },
-            avatar: {
-                type: Sequelize.STRING
-            },
-            gender: {
-                type: Sequelize.STRING,
-                defaultValue: 'male'
-            },
-            description: {
+            contentMarkdown: {
                 type: Sequelize.TEXT
             },
-            roleId: {
-                allowNull: false,
-                type: Sequelize.INTEGER
+            contentHTML: {
+                type: Sequelize.TEXT
             },
-            isActive: {
+            forDoctorId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+            },
+            forSpecializationId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+            },
+            forClinicId: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+            },
+            writerId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
+            confirmByDoctor: {
                 type: Sequelize.TINYINT(1),
-                defaultValue: true
+                allowNull: true,
+            },
+            image: {
+                type: Sequelize.STRING
             },
             createdAt: {
                 allowNull: false,
@@ -57,6 +55,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('Users');
+        return queryInterface.dropTable('Posts');
     }
 };
