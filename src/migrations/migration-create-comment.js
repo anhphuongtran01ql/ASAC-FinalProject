@@ -1,46 +1,35 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('Users', {
+        return queryInterface.createTable('Comments', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
+            doctorId: {
+                type: Sequelize.INTEGER
+            },
+            timeBooking: {
+                type: Sequelize.STRING
+            },
+            dateBooking: {
+                type: Sequelize.STRING
+            },
             name: {
-                type: Sequelize.STRING
-            },
-            email: {
-                type: Sequelize.STRING,
-                unique: true
-            },
-            password: {
-                type: Sequelize.STRING
-            },
-            address: {
                 type: Sequelize.STRING
             },
             phone: {
                 type: Sequelize.STRING
             },
-            avatar: {
-                type: Sequelize.STRING
-            },
-            gender: {
-                type: Sequelize.STRING,
-                defaultValue: 'male'
-            },
-            description: {
+            content: {
                 type: Sequelize.TEXT
             },
-            roleId: {
+            status: {
+                type: Sequelize.BOOLEAN,
                 allowNull: false,
-                type: Sequelize.INTEGER
-            },
-            isActive: {
-                type: Sequelize.TINYINT(1),
-                defaultValue: true
+                defaultValue: false
             },
             createdAt: {
                 allowNull: false,
@@ -57,6 +46,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('Users');
+        return queryInterface.dropTable('Comments');
     }
 };
