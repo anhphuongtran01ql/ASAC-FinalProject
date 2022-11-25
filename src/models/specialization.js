@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         deletedAt: DataTypes.DATE
     }, {});
     Specialization.associate = function(models) {
-        models.Specialization.hasOne(models.Post);
+        models.Specialization.hasOne(models.Post, { foreignKey: 'forSpecializationId' });
     };
     return Specialization;
 };

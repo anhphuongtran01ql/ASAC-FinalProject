@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         deletedAt: DataTypes.DATE
     }, {});
     Clinic.associate = function(models) {
-        models.Clinic.hasOne(models.Post);
+        models.Clinic.hasOne(models.Post, { foreignKey: 'forClinicId' });
     };
     return Clinic;
 };
