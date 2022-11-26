@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         deletedAt: DataTypes.DATE,
     }, {});
     Appointment.associate = function(models) {
-
+        models.Appointment.belongsTo(models.Patient, { foreignKey: 'id' });
     };
     return Appointment;
 };

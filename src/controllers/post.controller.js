@@ -47,7 +47,6 @@ exports.findOne = async (req, res) => {
     }
     res.send(post);
   } catch (err) {
-    console.log("post", err);
     res.status(500).send({
       message: "Error retrieving Property with id=" + id,
     });
@@ -57,12 +56,10 @@ exports.findOne = async (req, res) => {
 // Update a Property by the id in the request
 exports.update = async (req, res) => {
   const id = req.params.id;
-  console.log("id", id);
   Post.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
-      console.log("num", num);
       if (num[0] === 1) {
         res.send({
           message: "post was updated successfully.",
