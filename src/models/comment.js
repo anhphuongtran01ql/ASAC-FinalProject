@@ -2,8 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
     const Comment = sequelize.define('Comment', {
         doctorId: DataTypes.INTEGER,
-        timeBooking: DataTypes.STRING,
-        dateBooking: DataTypes.STRING,
+        timeBooking: DataTypes.TIME,
+        dateBooking: DataTypes.DATE,
         name: DataTypes.STRING,
         phone: DataTypes.STRING,
         content: DataTypes.TEXT,

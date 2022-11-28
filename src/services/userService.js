@@ -73,11 +73,12 @@ let editUserInfo = (id, data) => {
         where: { id: id },
       });
       if (user) {
-        user.firstName = data.firstName;
-        user.lastName = data.lastName;
+        user.email = data.email;
+        user.name = data.name;
         user.address = data.address;
-        user.phoneNumber = data.phoneNumber;
-        user.gender = data.gender;
+        user.phone = data.phone;
+        user.roleId = data.roleId;
+        user.description = data.description;
 
         let updatedUser = await user.save();
         resolve(updatedUser);
@@ -99,7 +100,7 @@ let deleteUser = async (id) => {
       let user = await db.User.findOne({ where: { id: id } });
       if (user) {
         await user.destroy();
-        resolve({ status: 200, message: "User deleted successfully!" });
+        resolve({message: "User deleted successfully!" });
       } else {
         resolve({ status: 404, message: "User not found!" });
       }

@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
         statusId: DataTypes.INTEGER,
         name: DataTypes.STRING,
         phone: DataTypes.STRING,
-        dateBooking: DataTypes.STRING,
-        timeBooking: DataTypes.STRING,
+        dateBooking: DataTypes.DATE,
+        timeBooking: DataTypes.TIME,
         email: DataTypes.STRING,
         gender: DataTypes.STRING,
         year: DataTypes.STRING,
@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         models.Patient.belongsTo(models.Status, { foreignKey: 'statusId' });
         models.Patient.hasOne(models.ExtraInfo);
         models.Patient.hasMany(models.SupporterLog);
+        models.Patient.hasMany(models.Appointment, { foreignKey: 'patientId' });
     };
     return Patient;
 };
