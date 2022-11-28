@@ -12,10 +12,10 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
             timeBooking: {
-                type: Sequelize.STRING
+                type: Sequelize.TIME
             },
             dateBooking: {
-                type: Sequelize.STRING
+                type: Sequelize.DATE
             },
             name: {
                 type: Sequelize.STRING

@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const Schedule = sequelize.define('Schedule', {
         doctorId: DataTypes.INTEGER,
         date: DataTypes.DATE,
-        time: DataTypes.TIME,
+        time: DataTypes.STRING,
         maxBooking: DataTypes.STRING,
         sumBooking: DataTypes.STRING,
         createdAt: DataTypes.DATE,

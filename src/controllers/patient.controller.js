@@ -38,7 +38,6 @@ exports.create = async (req, res) => {
 
     Patient.create(patient)
         .then((patientData) => {
-            console.log('patient data', patientData)
             const appointment = {
                 doctorId: data.doctorId,
                 patientId: patientData.id,
@@ -87,7 +86,6 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
     const id = req.params.id;
-    console.log('id',id)
     Patient.update(req.body, {
         where: { id: id },
     })
