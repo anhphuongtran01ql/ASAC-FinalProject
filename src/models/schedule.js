@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
     const Schedule = sequelize.define('Schedule', {
         doctorId: DataTypes.INTEGER,
-        date: DataTypes.STRING,
+        date: DataTypes.DATE,
         time: DataTypes.STRING,
         maxBooking: DataTypes.STRING,
         sumBooking: DataTypes.STRING,
