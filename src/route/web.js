@@ -17,7 +17,9 @@ let router = express.Router();
 
 let initWebRoutes = (app) => {
   router.get("/users", userController.getUsers); // not use
-  router.get("/doctors", [authJwt.verifyToken], userController.getAllDoctors);
+  router.get("/doctors",
+      // [authJwt.verifyToken],
+      userController.getAllDoctors);
   router.post("/user",[authJwt.verifyToken, verifySignUp.checkDuplicateUsernameOrEmail], userController.createUser);
   router.put("/users/:id", [authJwt.verifyToken], userController.editUser);
   router.delete("/users/:id", [authJwt.verifyToken], userController.deleteUser);
@@ -30,7 +32,9 @@ let initWebRoutes = (app) => {
   router.get("/info", [authJwt.verifyToken], authController.getUser);
   router.get("/logout", [authJwt.verifyToken], authController.logout);
 
-  router.get("/clinics", [authJwt.verifyToken], clinicController.findAll);
+  router.get("/clinics",
+      // [authJwt.verifyToken],
+      clinicController.findAll);
   router.get("/clinics/:id", [authJwt.verifyToken], clinicController.findOne);
   router.put("/clinics/:id", [authJwt.verifyToken], clinicController.update);
   router.delete("/clinics/:id", [authJwt.verifyToken], clinicController.delete);
@@ -38,13 +42,18 @@ let initWebRoutes = (app) => {
 
   router.get(
     "/specializations",
-    [authJwt.verifyToken],
+    // [authJwt.verifyToken],
     specializationController.findAll
   );
   router.get(
     "/specializations/:id",
     [authJwt.verifyToken],
     specializationController.findOne
+  );
+  router.get(
+      "/doctors/specializaton/:id",
+      // [authJwt.verifyToken],
+      specializationController.getDoctorBySpecializationId
   );
   router.delete(
     "/specializations/:id",
@@ -77,15 +86,24 @@ let initWebRoutes = (app) => {
   router.put("/supporter-logs/:id", [authJwt.verifyToken], supporterLogController.update);
   router.delete("/supporter-logs/:id", [authJwt.verifyToken], supporterLogController.delete);
 
-  router.get("/patients", [authJwt.verifyToken], patientLogController.findAll);
+  router.get("/patients",
+      // [authJwt.verifyToken],
+      patientLogController.findAll);
   router.get("/patients/:id", [authJwt.verifyToken], patientLogController.findOne);
-  router.post("/patient", [authJwt.verifyToken], patientLogController.create);
+  router.post("/patient",
+      // [authJwt.verifyToken],
+      patientLogController.create);
   router.put("/patients/:id", [authJwt.verifyToken], patientLogController.update);
   router.delete("/patients/:id", [authJwt.verifyToken], patientLogController.delete);
 
-  router.get("/schedule-of-doctors-by-date", [authJwt.verifyToken], doctorController.getDoctorScheduleByDay);
-  router.get("/appointment-of-doctors-by-date", [authJwt.verifyToken], doctorController.getDoctorAppointmentByDay);
+  router.get("/schedule-of-doctors-by-date",
+      // [authJwt.verifyToken],
+      doctorController.getDoctorScheduleByDay);
+  router.get("/appointment-of-doctors-by-date",
+      // [authJwt.verifyToken],
+      doctorController.getDoctorAppointmentByDay);
   router.get("/patients-by-doctor-id/:id", [authJwt.verifyToken], doctorController.getAllPatientByDoctorId);
+  router.get("/doctors/:id", doctorController.getDoctorById);
   router.post("/comment", [authJwt.verifyToken], doctorController.createComment);
 
   return app.use("/", router);

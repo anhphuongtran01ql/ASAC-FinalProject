@@ -1,7 +1,14 @@
 //controllers/property.controller.js
 const db = require("../models/index");
 const Specialization = db.Specialization;
+const DoctorUser = db.Doctor_User;
+const User = db.User;
 const Op = db.Sequelize.Op;
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.json')[env];
+
+const { QueryTypes,Sequelize } = require('sequelize');
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 // Create and Save a new Property
 exports.create = async (req, res) => {
@@ -48,7 +55,7 @@ exports.create = async (req, res) => {
 // Retrieve all clinics from the database.
 exports.findAll = (req, res) => {
   const name = req.query.name;
-  const condition = name ? { title: { [Op.like]: `%${name}%` } } : null;
+  const condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
   Specialization.findAll({ where: condition })
     .then((data) => {
@@ -124,4 +131,25 @@ exports.delete = (req, res) => {
         message: "Could not delete Property with id=" + id,
       });
     });
+};
+
+exports.getDoctorBySpecializationId = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const [results, metadata] = await sequelize.query(
+        "select u.* from users u " +
+        "JOIN doctor_users dt on dt.doctorId = u.id " +
+        "JOIN specializations s ON s.id = dt.specializationId " +
+        "where s.id = :id",
+        {
+          replacements: {id:id},
+        }
+    );
+
+    res.send(results);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Error to get doctors ",
+    });
+  }
 };

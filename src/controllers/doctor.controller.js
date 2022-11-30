@@ -1,6 +1,7 @@
 const db = require("../models/index");
 const Schedule = db.Schedule;
 const Patient = db.Patient;
+const User = db.User;
 const Comment = db.Comment;
 const Appointment = db.Appointment;
 const SUCCESS_STATUS = 2;
@@ -11,7 +12,7 @@ exports.getDoctorScheduleByDay = (req, res) => {
     let condition = {};
     if (query.doctorId && query.date) {
         condition = {date: new Date(query.date), doctorId: query.doctorId};
-        Schedule.findAll({where: condition})
+        Schedule.findOne({where: condition})
             .then((data) => {
                 res.send(data);
             })
@@ -66,6 +67,21 @@ exports.getAllPatientByDoctorId = (req, res) => {
             res.status(500).send({
                 message:
                     err.message || "Some error occurred while retrieving Schedule.",
+            });
+        })
+};
+
+exports.getDoctorById = (req, res) => {
+    const doctorId = req.params.id;
+    User.findByPk(doctorId)
+        .then((data) => {
+                res.send(data);
+            }
+        )
+        .catch((err) => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving Doctor.",
             });
         })
 };

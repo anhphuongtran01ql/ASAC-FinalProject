@@ -39,7 +39,7 @@ exports.create = (req, res) => {
 // Retrieve all clinics from the database.
 exports.findAll = (req, res) => {
     const name = req.query.name;
-    const condition = name ? {title: {[Op.like]: `%${name}%`}} : null;
+    const condition = name ? {name: {[Op.like]: `%${name}%`}} : null;
 
     Clinic.findAll({where: condition})
         .then(data => {
