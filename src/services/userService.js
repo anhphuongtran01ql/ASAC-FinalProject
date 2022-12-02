@@ -41,11 +41,10 @@ let createNewUser = (data) => {
       let user = await db.User.create({
         email: data.email,
         password: password,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        name: data.name,
         address: data.address,
-        phoneNumber: data.phoneNumber,
-        gender: data.gender === 1,
+        phone: data.phone,
+        gender: data.gender,
         roleId: data.roleId,
       });
       resolve(user);
@@ -78,6 +77,7 @@ let editUserInfo = (id, data) => {
         user.address = data.address;
         user.phone = data.phone;
         user.roleId = data.roleId;
+        user.gender= data.gender ;
         user.description = data.description;
 
         let updatedUser = await user.save();
@@ -100,7 +100,7 @@ let deleteUser = async (id) => {
       let user = await db.User.findOne({ where: { id: id } });
       if (user) {
         await user.destroy();
-        resolve({message: "User deleted successfully!" });
+        resolve({ message: "User deleted successfully!" });
       } else {
         resolve({ status: 404, message: "User not found!" });
       }
