@@ -154,7 +154,7 @@ exports.getDoctorBySpecializationId = async (req, res) => {
       }
     );
 
-    res.send({specializationName: specialization.name,description: specialization.description, data:results });
+    res.send({specializationName: specialization.name,description: specialization.descriptionHTML, data:results });
   } catch (err) {
     res.status(500).send({
       message: err.message || "Error to get doctors ",

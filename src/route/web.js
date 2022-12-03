@@ -53,7 +53,7 @@ let initWebRoutes = (app) => {
     specializationController.findOne
   );
   router.get(
-    "/doctors/specializaton/:id",
+    "/doctors/specializations/:id",
     // [authJwt.verifyToken],
     specializationController.getDoctorBySpecializationId
   );

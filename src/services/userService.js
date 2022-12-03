@@ -45,10 +45,10 @@ let createNewUser = async (req, res, data) => {
     const user = await db.User.create({
       email: data.email,
       password: password,
-      firstName: data.firstName,
+      name: data.name,
       lastName: data.lastName,
       address: data.address,
-      phoneNumber: data.phoneNumber,
+      phone: data.phone,
       gender: data.gender === 1,
       roleId: data.roleId,
     }, { transaction: t });

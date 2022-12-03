@@ -2,7 +2,7 @@
 const db = require("../models/index");
 const Clinic = db.Clinic;
 const Op = db.Sequelize.Op;
-
+const sequelize = db.sequelize;
 // Create and Save a new Property
 exports.create = (req, res) => {
     // Validate request
@@ -62,9 +62,11 @@ exports.findOne = (req, res) => {
             if (data) {
                 res.send(data);
             }
-            res.status(404).send({
-                message: "Not found"
-            });
+            else {
+                res.status(404).send({
+                    message: "Not found"
+                });
+            }
         })
         .catch(err => {
             res.status(500).send({

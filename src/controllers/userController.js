@@ -25,8 +25,7 @@ let getUser = async (req, res) => {
 };
 
 let createUser = async (req, res) => {
-  let data = await userService.createNewUser(req, res, req.body);
-  return res.send(data);
+  await userService.createNewUser(req, res, req.body);
 };
 
 let editUser = async (req, res) => {
