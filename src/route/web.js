@@ -66,7 +66,7 @@ let initWebRoutes = (app) => {
   );
   router.get(
     "/specializations/:id",
-    [authJwt.verifyToken],
+    // [authJwt.verifyToken],
     specializationController.findOne
   );
   router.get(
@@ -76,13 +76,18 @@ let initWebRoutes = (app) => {
   );
   router.delete(
     "/specializations/:id",
-    [authJwt.verifyToken],
+    // [authJwt.verifyToken],
     specializationController.delete
   );
   router.post(
     "/specialization",
-    [authJwt.verifyToken],
+    // [authJwt.verifyToken],
     specializationController.create
+  );
+  router.put(
+    "/specialization/:id",
+    // [authJwt.verifyToken],
+    specializationController.update
   );
 
   router.get("/supporters", [authJwt.verifyToken], supporterController.findAll);

@@ -4,11 +4,16 @@ const Specialization = db.Specialization;
 const DoctorUser = db.Doctor_User;
 const User = db.User;
 const Op = db.Sequelize.Op;
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const env = process.env.NODE_ENV || "development";
+const config = require(__dirname + "/../config/config.json")[env];
 
-const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
+const { Sequelize } = require("sequelize");
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  config
+);
 
 // Create and Save a new Property
 exports.create = async (req, res) => {
@@ -36,7 +41,8 @@ exports.create = async (req, res) => {
   // Create a clinic
   const specialization = {
     name: data.name,
-    description: data.description,
+    descriptionHTML: data.descriptionHTML,
+    descriptionMarkdown: data.descriptionMarkdown,
     image: data.image,
   };
   // Save Property in the database
@@ -138,22 +144,26 @@ exports.getDoctorBySpecializationId = async (req, res) => {
   try {
     const specialization = await Specialization.findByPk(id);
     if (!specialization) {
-       res.status(404).send({
-         message: "Not found",
-       });
-       return;
-     }
+      res.status(404).send({
+        message: "Not found",
+      });
+      return;
+    }
     const [results, metadata] = await sequelize.query(
-        "select u.* from users u " +
+      "select u.* from users u " +
         "JOIN doctor_users dt on dt.doctorId = u.id " +
         "JOIN specializations s ON s.id = dt.specializationId " +
         "where s.id = :id",
-        {
-          replacements: {id:id},
-        }
+      {
+        replacements: { id: id },
+      }
     );
 
-    res.send({name: specialization.name,description: specialization.description, data:results });
+    res.send({
+      name: specialization.name,
+      description: specialization.description,
+      data: results,
+    });
   } catch (err) {
     res.status(500).send({
       message: err.message || "Error to get doctors ",

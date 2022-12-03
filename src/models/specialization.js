@@ -2,7 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
     const Specialization = sequelize.define('Specialization', {
         name: DataTypes.STRING,
-        description: DataTypes.TEXT,
+        descriptionHTML: DataTypes.TEXT,
+        descriptionMarkdown: DataTypes.TEXT,
         image: DataTypes.STRING,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
