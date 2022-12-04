@@ -24,7 +24,9 @@ let initWebRoutes = (app) => {
       [authJwt.verifyToken, verifySignUp.checkDuplicateUsernameOrEmail],
       userController.createUser);
   router.put("/users/:id", [authJwt.verifyToken], userController.editUser);
-  router.delete("/users/:id", [authJwt.verifyToken], userController.deleteUser);
+  router.delete("/users/:id",
+      // [authJwt.verifyToken],
+      userController.deleteUser);
   router.post(
     "/auth/signup",
     [verifySignUp.checkDuplicateUsernameOrEmail],
@@ -37,10 +39,18 @@ let initWebRoutes = (app) => {
   router.get("/clinics",
       // [authJwt.verifyToken],
       clinicController.findAll);
-  router.get("/clinics/:id", [authJwt.verifyToken], clinicController.findOne);
+  router.get("/clinics/:id",
+      // [authJwt.verifyToken],
+      clinicController.findOne);
   router.put("/clinics/:id", [authJwt.verifyToken], clinicController.update);
   router.delete("/clinics/:id", [authJwt.verifyToken], clinicController.delete);
   router.post("/clinic", [authJwt.verifyToken], clinicController.create);
+  router.get("/clinics/:id/specializations/:specializationId",
+      // [authJwt.verifyToken],
+      clinicController.findAllDoctorByClinicId);
+  router.get("/clinics/:id/specializations",
+      // [authJwt.verifyToken],
+      clinicController.findAllSpecializationsByClinicId);
 
   router.get(
     "/specializations",

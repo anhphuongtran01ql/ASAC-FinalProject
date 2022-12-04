@@ -4,17 +4,11 @@ const Specialization = db.Specialization;
 const DoctorUser = db.Doctor_User;
 const User = db.User;
 const Op = db.Sequelize.Op;
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const sequelize = db.sequelize;
 
-const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
-
-// Create and Save a new Property
 exports.create = async (req, res) => {
   const data = req.body;
 
-  // Validate request
   if (!data.name) {
     res.status(400).send({
       message: "Name can not be empty!",
@@ -94,19 +88,27 @@ exports.findOne = async (req, res) => {
 // Update a Property by the id in the request
 exports.update = async (req, res) => {
   const id = req.params.id;
-  Specialization.update(req.body, {
-    where: { id: id },
-  })
-    .then((num) => {
-      res.send({
+  try {
+    const specialization = await Specialization.findByPk(id);
+    if(!specialization) {
+      return res.status(404).send({
+        message: "Not found Specialization!",
+      });
+    }
+    else {
+      await Specialization.update(req.body, {
+        where: { id: id },
+      })
+      return res.send({
         message: "Specialization was updated successfully.",
       });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating Property with id=" + id,
-      });
+    }
+
+  } catch (err) {
+    res.status(500).send({
+      message: "Error updating Property with id=" + id,
     });
+  }
 };
 
 // Delete a Property with the specified id in the request
@@ -136,6 +138,7 @@ exports.delete = (req, res) => {
 
 exports.getDoctorBySpecializationId = async (req, res) => {
   const id = req.params.id;
+  const name = req.query.name;
   try {
     const specialization = await Specialization.findByPk(id);
     if (!specialization) {
@@ -144,11 +147,18 @@ exports.getDoctorBySpecializationId = async (req, res) => {
       });
       return;
     }
-    const [results, metadata] = await sequelize.query(
-        "select u.* from users u " +
+
+    let query ="select u.* from users u " +
         "JOIN doctor_users dt on dt.doctorId = u.id " +
         "JOIN specializations s ON s.id = dt.specializationId " +
-        "where s.id = :id",
+        "where s.id = :id ";
+
+    if(name) {
+      query +=`and u.name LIKE '%${name}%'`;
+    }
+
+    const [results, metadata] = await sequelize.query(
+        query,
       {
         replacements: { id: id },
       }
