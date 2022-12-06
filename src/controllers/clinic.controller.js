@@ -19,9 +19,13 @@ exports.create = (req, res) => {
         name: req.body.name,
         phone: req.body.phone,
         address: req.body.address,
-        // introductionHTML: req.body.introductionHTML,
-        // introductionMarkdown: req.body.introductionMarkdown,
+        introductionHTML: req.body.introductionHTML,
         description: req.body.description,
+        equipmentHTML: req.body.equipmentHTML,
+        avatar:req.body.avatar,
+        equipmentImg:req.body.equipmentImg,
+        locationHTML: req.body.locationHTML,
+        locationImg:req.body.locationImg,
         image: req.body.image,
     };
     // Save Property in the database

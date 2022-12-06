@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
         introductionMarkdown: DataTypes.TEXT,
         description: DataTypes.TEXT,
         image: DataTypes.STRING,
+        avatar: DataTypes.STRING,
+        equipmentHTML: DataTypes.TEXT,
+        equipmentImg:DataTypes.STRING,
+        locationHTML: DataTypes.TEXT,
+        locationImg:DataTypes.STRING,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
         deletedAt: DataTypes.DATE
