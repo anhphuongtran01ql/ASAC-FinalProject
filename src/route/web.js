@@ -8,7 +8,7 @@ import supporterController from "../controllers/supporter.controller";
 import postController from "../controllers/post.controller";
 import scheduleController from "../controllers/schedule.controller";
 import supporterLogController from "../controllers/supporterLog.controller";
-import patientLogController from "../controllers/patient.controller";
+import patientController from "../controllers/patient.controller";
 import doctorController from "../controllers/doctor.controller";
 
 const { authJwt } = require("../middleware");
@@ -107,13 +107,15 @@ let initWebRoutes = (app) => {
 
   router.get("/patients",
       // [authJwt.verifyToken],
-      patientLogController.findAll);
-  router.get("/patients/:id", [authJwt.verifyToken], patientLogController.findOne);
+      patientController.findAll);
+  router.get("/patients/:id",
+      // [authJwt.verifyToken],
+      patientController.findOne);
   router.post("/patient",
       // [authJwt.verifyToken],
-      patientLogController.create);
-  router.put("/patients/:id", [authJwt.verifyToken], patientLogController.update);
-  router.delete("/patients/:id", [authJwt.verifyToken], patientLogController.delete);
+      patientController.create);
+  router.put("/patients/:id", [authJwt.verifyToken], patientController.update);
+  router.delete("/patients/:id", [authJwt.verifyToken], patientController.delete);
 
   router.get("/schedule-of-doctors-by-date",
       // [authJwt.verifyToken],

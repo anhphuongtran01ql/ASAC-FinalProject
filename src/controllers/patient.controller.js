@@ -1,20 +1,27 @@
 //controllers/property.controller.js
 const db = require("../models/index");
 const Patient = db.Patient;
+const User = db.User;
+const Status = db.Status;
 const Appointment = db.Appointment;
 const Op = db.Sequelize.Op;
+const sequelize = db.sequelize;
+const DEFAULT_STATUS_ID = 1;
 
-exports.findAll = (req, res) => {
-    Patient.findAll()
-        .then((data) => {
-            res.send(data);
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving Patient.",
-            });
+exports.findAll = async (req, res) => {
+    const name = req.query.name;
+    try {
+        let query = "select p.*,u.name as doctorName, s.name as statusName from patients p join users u on p.doctorId=u.id join statuses s on s.id = p.statusId where u.roleId = 3 ";
+        if (name) {
+            query += `and p.name LIKE '%${name}%'`;
+        }
+        const [results, metadata] = await sequelize.query(query);
+        res.send({data: results});
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Error to get patients ",
         });
+    }
 };
 
 exports.create = async (req, res) => {
@@ -22,7 +29,7 @@ exports.create = async (req, res) => {
 
     const patient = {
         doctorId: data.doctorId,
-        statusId: data.statusId,
+        statusId: DEFAULT_STATUS_ID,
         name: data.name,
         phone: data.phone,
         dateBooking: data.dateBooking,
@@ -76,7 +83,9 @@ exports.findOne = async (req, res) => {
             });
             return;
         }
-        res.send(patient);
+        const doctor = await User.findByPk(patient.doctorId);
+        const status = await Status.findByPk(patient.statusId);
+        res.send({...patient.dataValues, doctorName:doctor.name ?? "",statusName:status.name ?? ""});
     } catch (err) {
         res.status(500).send({
             message: "Error retrieving patient with id = " + id,
