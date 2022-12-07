@@ -29,9 +29,7 @@ let createUser = async (req, res) => {
 };
 
 let editUser = async (req, res) => {
-  let id = req.params.id;
-  let updatedUser = await userService.editUserInfo(id, req.body);
-  return res.send(updatedUser);
+  await userService.editUserInfo(req, res);
 };
 
 let deleteUser = (req, res) => {

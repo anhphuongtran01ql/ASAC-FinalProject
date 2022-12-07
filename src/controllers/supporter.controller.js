@@ -54,13 +54,18 @@ exports.updateStatusPatient = async (req, res) => {
       });
 
       if (data.statusId === APPROVE_STATUS) {
-          let query = `select * from schedules where doctorId = ${patient.doctorId} and date = '${patient.dateBooking}'`;
-          console.log('query',query)
-          const [results] = await sequelize.query(query);
-        console.log('patient.dateBooking',results)
-        if(results[0].time){
-          const dataTransform = JSON.parse(results[0].time)//do update status schedule here
-          console.log('dataTransform',dataTransform)
+          const schedule = await Schedule.findOne({
+            where : {
+              doctorId:patient.doctorId,
+              date: new Date(patient.dateBooking)
+            }
+          })
+        if(schedule && schedule.time){
+          let newTime = JSON.parse(schedule.time)//do update status schedule here
+          newTime = newTime.map((item)=>{
+            return item.time === patient.timeBooking ? {...item, status : 1} : item
+          })
+          await schedule.update({time : JSON.stringify(newTime)});
         }
         const appointment = {
           doctorId: patient.doctorId,

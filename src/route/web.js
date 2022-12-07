@@ -83,7 +83,9 @@ let initWebRoutes = (app) => {
     specializationController.update
   );
 
-  router.get("/supporters", [authJwt.verifyToken], supporterController.findAll);
+  router.get("/supporters",
+      // [authJwt.verifyToken],
+      supporterController.findAll);
   router.post("/supporters/update-status-patient",
       // [authJwt.verifyToken],
       supporterController.updateStatusPatient);

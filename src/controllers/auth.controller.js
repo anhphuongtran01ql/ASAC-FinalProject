@@ -47,12 +47,8 @@ exports.login = async (req, res) => {
             var token = await jwt.sign({id: user.id}, config.secret, {
                 expiresIn: 86400 // 24 hours
             });
-
-            return res.json({
-                access_token: token,
-                token_type: 'Bearer',
-                expires_in: 86400
-            });
+            const userInfo = await User.findByPk(user.id);
+            return res.json({...userInfo.dataValues, access_token: token, token_type: 'Bearer', expires_in: 86400});
         })
         .catch(err => {
             res.status(500).send({message: err.message});

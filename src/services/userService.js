@@ -74,6 +74,7 @@ let createNewUser = async (req, res, data) => {
       return res.send(user)
     }
     else {
+      await t.commit();
       res.send(user)
     }
   } catch (err) {
@@ -95,33 +96,26 @@ let hashUserPassword = (password) => {
   });
 };
 
-let editUserInfo = (id, data) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let user = await db.User.findOne({
-        where: { id: id },
+let editUserInfo = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await db.User.findByPk(id);
+    if (!user) {
+      return res.status(404).send({
+        message: "Not found!",
       });
-      if (user) {
-        user.email = data.email;
-        user.name = data.name;
-        user.address = data.address;
-        user.phone = data.phone;
-        user.roleId = data.roleId;
-        user.gender= data.gender ;
-        user.description = data.description;
-
-        let updatedUser = await user.save();
-        resolve(updatedUser);
-      } else {
-        resolve({
-          status: 404,
-          message: "User not found!",
-        });
-      }
-    } catch (e) {
-      reject(e);
     }
-  });
+    else {
+      await db.User.update(req.body, {
+        where: { id: id },
+      })
+      return res.send({message:"Update success!"})
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Create user err ",
+    });
+  }
 };
 
 let deleteUser = async (id) => {
