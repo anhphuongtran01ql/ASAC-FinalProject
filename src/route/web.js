@@ -10,6 +10,7 @@ import scheduleController from "../controllers/schedule.controller";
 import supporterLogController from "../controllers/supporterLog.controller";
 import patientController from "../controllers/patient.controller";
 import doctorController from "../controllers/doctor.controller";
+import commentController from "../controllers/comment.controller";
 
 const { authJwt } = require("../middleware");
 
@@ -128,6 +129,7 @@ let initWebRoutes = (app) => {
   router.get("/patients-by-doctor-id/:id", [authJwt.verifyToken], doctorController.getAllPatientByDoctorId);
   router.get("/doctors/:id", doctorController.getDoctorById);
   router.post("/comment", [authJwt.verifyToken], doctorController.createComment);
+  router.get("/doctor/:id/comments", [authJwt.verifyToken], commentController.findAllCommentByDoctorId);
 
   return app.use("/", router);
 };

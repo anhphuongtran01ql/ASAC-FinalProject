@@ -49,6 +49,8 @@ let createNewUser = async (req, res, data) => {
       lastName: data.lastName,
       address: data.address,
       phone: data.phone,
+      generalInfo: data.generalInfo,
+      avatar: data.avatar,
       gender: data.gender === 1,
       roleId: data.roleId,
     }, { transaction: t });
