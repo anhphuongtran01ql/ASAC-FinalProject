@@ -12,6 +12,7 @@ const APPROVE_STATUS = 2;
 const sequelize = db.sequelize;
 const SUCCESS = "success";
 const REJECT = "reject";
+const REJECT_STATUS = 3;
 
 exports.findAll = (req, res) => {
   const name = req.query.name;

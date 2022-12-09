@@ -4,6 +4,8 @@ const Patient = db.Patient;
 const User = db.User;
 const Comment = db.Comment;
 const Appointment = db.Appointment;
+const Op = db.Sequelize.Op;
+
 const SUCCESS_STATUS = 2;
 const DONE_STATUS = 4;
 const env = process.env.NODE_ENV || 'development';
@@ -61,7 +63,10 @@ exports.getAllPatientByDoctorId = (req, res) => {
     Patient.findAll({
         where: {
             doctorId: doctorId,
-            statusId: SUCCESS_STATUS
+            [Op.or]: [
+                { statusId: SUCCESS_STATUS },
+                { statusId: DONE_STATUS }
+            ]
         }
     })
         .then((data) => {
