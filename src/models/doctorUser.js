@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {});
     Doctor_User.associate = function(models) {
         models.Doctor_User.belongsTo(models.User, { foreignKey: 'doctorId' });
+        models.Doctor_User.belongsTo(models.Specialization,{ foreignKey: 'specializationId' })
     };
     return Doctor_User;
 };

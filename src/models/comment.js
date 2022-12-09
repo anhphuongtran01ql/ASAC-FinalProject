@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
     const Comment = sequelize.define('Comment', {
         doctorId: DataTypes.INTEGER,
-        timeBooking: DataTypes.TIME,
+        timeBooking: DataTypes.STRING,
         dateBooking: DataTypes.DATE,
         name: DataTypes.STRING,
         phone: DataTypes.STRING,

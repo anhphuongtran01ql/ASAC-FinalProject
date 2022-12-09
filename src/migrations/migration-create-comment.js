@@ -12,7 +12,7 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
             timeBooking: {
-                type: Sequelize.TIME
+                type: Sequelize.STRING
             },
             dateBooking: {
                 type: Sequelize.DATE

@@ -8,8 +8,9 @@ import supporterController from "../controllers/supporter.controller";
 import postController from "../controllers/post.controller";
 import scheduleController from "../controllers/schedule.controller";
 import supporterLogController from "../controllers/supporterLog.controller";
-import patientLogController from "../controllers/patient.controller";
+import patientController from "../controllers/patient.controller";
 import doctorController from "../controllers/doctor.controller";
+import commentController from "../controllers/comment.controller";
 
 const { authJwt } = require("../middleware");
 
@@ -17,10 +18,16 @@ let router = express.Router();
 
 let initWebRoutes = (app) => {
   router.get("/users", userController.getUsers); // not use
-  router.get("/doctors", [authJwt.verifyToken], userController.getAllDoctors);
-  router.post("/user",[authJwt.verifyToken, verifySignUp.checkDuplicateUsernameOrEmail], userController.createUser);
+  router.get("/doctors",
+      // [authJwt.verifyToken],
+      userController.getAllDoctors);
+  router.post("/user",
+      [authJwt.verifyToken, verifySignUp.checkDuplicateUsernameOrEmail],
+      userController.createUser);
   router.put("/users/:id", [authJwt.verifyToken], userController.editUser);
-  router.delete("/users/:id", [authJwt.verifyToken], userController.deleteUser);
+  router.delete("/users/:id",
+      // [authJwt.verifyToken],
+      userController.deleteUser);
   router.post(
     "/auth/signup",
     [verifySignUp.checkDuplicateUsernameOrEmail],
@@ -30,35 +37,59 @@ let initWebRoutes = (app) => {
   router.get("/info", [authJwt.verifyToken], authController.getUser);
   router.get("/logout", [authJwt.verifyToken], authController.logout);
 
-  router.get("/clinics", [authJwt.verifyToken], clinicController.findAll);
-  router.get("/clinics/:id", [authJwt.verifyToken], clinicController.findOne);
+  router.get("/clinics",
+      // [authJwt.verifyToken],
+      clinicController.findAll);
+  router.get("/clinics/:id",
+      // [authJwt.verifyToken],
+      clinicController.findOne);
   router.put("/clinics/:id", [authJwt.verifyToken], clinicController.update);
   router.delete("/clinics/:id", [authJwt.verifyToken], clinicController.delete);
   router.post("/clinic", [authJwt.verifyToken], clinicController.create);
+  router.get("/clinics/:id/specializations/:specializationId",
+      // [authJwt.verifyToken],
+      clinicController.findAllDoctorByClinicId);
+  router.get("/clinics/:id/specializations",
+      // [authJwt.verifyToken],
+      clinicController.findAllSpecializationsByClinicId);
 
   router.get(
     "/specializations",
-    [authJwt.verifyToken],
+    // [authJwt.verifyToken],
     specializationController.findAll
   );
   router.get(
     "/specializations/:id",
-    [authJwt.verifyToken],
+    // [authJwt.verifyToken],
     specializationController.findOne
+  );
+  router.get(
+    "/doctors/specializations/:id",
+    // [authJwt.verifyToken],
+    specializationController.getDoctorBySpecializationId
   );
   router.delete(
     "/specializations/:id",
-    [authJwt.verifyToken],
+    // [authJwt.verifyToken],
     specializationController.delete
   );
   router.post(
     "/specialization",
-    [authJwt.verifyToken],
+    // [authJwt.verifyToken],
     specializationController.create
   );
+  router.put(
+    "/specialization/:id",
+    // [authJwt.verifyToken],
+    specializationController.update
+  );
 
-  router.get("/supporters", [authJwt.verifyToken], supporterController.findAll);
-  router.post("/supporters/update-status-patient", [authJwt.verifyToken], supporterController.updateStatusPatient);
+  router.get("/supporters",
+      // [authJwt.verifyToken],
+      supporterController.findAll);
+  router.post("/supporters/update-status-patient",
+      // [authJwt.verifyToken],
+      supporterController.updateStatusPatient);
 
   router.get("/posts/:id", [authJwt.verifyToken], postController.findOne);
   router.delete("/posts/:id", [authJwt.verifyToken], postController.delete);
@@ -77,16 +108,29 @@ let initWebRoutes = (app) => {
   router.put("/supporter-logs/:id", [authJwt.verifyToken], supporterLogController.update);
   router.delete("/supporter-logs/:id", [authJwt.verifyToken], supporterLogController.delete);
 
-  router.get("/patients", [authJwt.verifyToken], patientLogController.findAll);
-  router.get("/patients/:id", [authJwt.verifyToken], patientLogController.findOne);
-  router.post("/patient", [authJwt.verifyToken], patientLogController.create);
-  router.put("/patients/:id", [authJwt.verifyToken], patientLogController.update);
-  router.delete("/patients/:id", [authJwt.verifyToken], patientLogController.delete);
+  router.get("/patients",
+      // [authJwt.verifyToken],
+      patientController.findAll);
+  router.get("/patients/:id",
+      // [authJwt.verifyToken],
+      patientController.findOne);
+  router.post("/patient",
+      // [authJwt.verifyToken],
+      patientController.create);
+  router.put("/patients/:id", [authJwt.verifyToken], patientController.update);
+  router.delete("/patients/:id", [authJwt.verifyToken], patientController.delete);
 
-  router.get("/schedule-of-doctors-by-date", [authJwt.verifyToken], doctorController.getDoctorScheduleByDay);
-  router.get("/appointment-of-doctors-by-date", [authJwt.verifyToken], doctorController.getDoctorAppointmentByDay);
+  router.get("/schedule-of-doctors-by-date",
+      // [authJwt.verifyToken],
+      doctorController.getDoctorScheduleByDay);
+  router.get("/appointment-of-doctors-by-date",
+      // [authJwt.verifyToken],
+      doctorController.getDoctorAppointmentByDay);
   router.get("/patients-by-doctor-id/:id", [authJwt.verifyToken], doctorController.getAllPatientByDoctorId);
+  router.get("/doctors/:id", doctorController.getDoctorById);
   router.post("/comment", [authJwt.verifyToken], doctorController.createComment);
+  router.get("/doctor/:id/comments", [authJwt.verifyToken], commentController.findAllCommentByDoctorId);
+  router.get("/appointments/:id/comment", [authJwt.verifyToken], commentController.findCommentByDoctorId);
 
   return app.use("/", router);
 };

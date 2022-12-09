@@ -26,7 +26,22 @@ module.exports = {
             description: {
                 type: Sequelize.TEXT
             },
+            equipmentHTML: {
+                type: Sequelize.TEXT
+            },
+            equipmentImg: {
+                type: Sequelize.STRING
+            },
+            locationHTML: {
+                type: Sequelize.TEXT
+            },
+            locationImg: {
+                type: Sequelize.STRING
+            },
             image: {
+                type: Sequelize.STRING
+            },
+            avatar: {
                 type: Sequelize.STRING
             },
             createdAt: {

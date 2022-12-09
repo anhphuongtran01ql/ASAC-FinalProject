@@ -3,6 +3,10 @@ import userService from "../services/userService";
 const db = require("../models/index");
 const User = db.User;
 const Op = db.Sequelize.Op;
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.json')[env];
+const { Sequelize } = require('sequelize');
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
 const DOCTOR_ROLE_ID = 3;
 
 let getUsers = async (req, res) => {
@@ -21,14 +25,11 @@ let getUser = async (req, res) => {
 };
 
 let createUser = async (req, res) => {
-  let data = await userService.createNewUser(req.body);
-  return res.send(data);
+  await userService.createNewUser(req, res, req.body);
 };
 
 let editUser = async (req, res) => {
-  let id = req.params.id;
-  let updatedUser = await userService.editUserInfo(id, req.body);
-  return res.send(updatedUser);
+  await userService.editUserInfo(req, res);
 };
 
 let deleteUser = (req, res) => {
@@ -74,11 +75,36 @@ let getAllDoctors = (req, res) => {
       });
 }
 
+let getAllDoctorsAndSpecialization = async (req, res) => {
+  const name = req.query.name;
+  try {
+    let query = "select u.*, s.name as specialization from users u " +
+      "left join doctor_users du on u.id = du.doctorId " +
+      "left join specializations s on s.id = du.specializationId " +
+      "WHERE u.roleId = :doctorRoleId ";
+    if(name) {
+      query +=`and u.name LIKE '%${name}%'`;
+    }
+    const [doctors] = await sequelize.query(
+      query,
+      {
+        replacements: {doctorRoleId: DOCTOR_ROLE_ID},
+      }
+    );
+    res.send(doctors);
+  } catch (err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving Doctors.",
+    });
+  }
+}
+
 module.exports = {
   getUsers: getUsers,
   getUser: getUser,
   createUser: createUser,
   editUser: editUser,
   deleteUser: deleteUser,
-  getAllDoctors: getAllDoctors
+  getAllDoctors: getAllDoctorsAndSpecialization
 };
