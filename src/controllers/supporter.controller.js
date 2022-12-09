@@ -112,6 +112,7 @@ exports.updateStatusPatient = async (req, res) => {
 
           if (duplicateBookings.length > 0) {
             for (const rejectPatient of duplicateBookings) {
+              await rejectPatient.update({statusId:REJECT_STATUS})
               await sendMailController.sendMail(rejectPatient.email, REJECT, rejectPatient.name)
             }
           }
