@@ -131,6 +131,7 @@ let initWebRoutes = (app) => {
   router.get("/doctor/:id/comments", [authJwt.verifyToken], commentController.findAllCommentByDoctorId);
   router.get("/appointments/:id/comment", [authJwt.verifyToken], commentController.findCommentByDoctorId);
   router.put("/appointments/comments/:id", [authJwt.verifyToken], doctorController.editComment);
+  router.get("/comments/:id", [authJwt.verifyToken], doctorController.getCommentById);
 
   return app.use("/", router);
 };

@@ -125,3 +125,23 @@ exports.editComment = async (req, res) => {
         });
     }
 };
+
+exports.getCommentById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const comment = await Comment.findByPk(id);
+        if (!comment) {
+            return res.status(404).send({
+                message: "Not found",
+            });
+        }
+        else {
+            res.send(comment)
+        }
+    } catch (err) {
+        res.status(500).send({
+            message:
+                err.message || "Some error occurred while creating the Property.",
+        });
+    }
+};
