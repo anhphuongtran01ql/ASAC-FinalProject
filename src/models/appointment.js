@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         doctorId: DataTypes.INTEGER,
         patientId: DataTypes.INTEGER,
         date: DataTypes.DATE,
-        time: DataTypes.TIME,
+        time: DataTypes.STRING,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
         deletedAt: DataTypes.DATE,

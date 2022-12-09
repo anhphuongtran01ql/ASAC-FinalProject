@@ -38,6 +38,7 @@ exports.create = async (req, res) => {
         gender: data.gender,
         year: data.year,
         address: data.address,
+        clinicAddress: data.clinicAddress,
         description: data.description,
         isSentForms:data.isSentForms,
         isTakeCare: data.isTakeCare,
@@ -45,22 +46,7 @@ exports.create = async (req, res) => {
 
     Patient.create(patient)
         .then((patientData) => {
-            const appointment = {
-                doctorId: data.doctorId,
-                patientId: patientData.id,
-                date: data.dateBooking,
-                time: data.timeBooking,
-            }
-            Appointment.create(appointment)
-                .then((appointmentData) => {
-                    res.send(patientData);
-                })
-                .catch((err) => {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while creating the appointment.",
-                });
-            })
+            res.send(patientData);
         })
         .catch((err) => {
             res.status(500).send({

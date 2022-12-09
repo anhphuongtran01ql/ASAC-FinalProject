@@ -26,7 +26,10 @@ module.exports = {
                 type: Sequelize.DATE
             },
             timeBooking: {
-                type: Sequelize.TIME
+                type: Sequelize.STRING
+            },
+            clinicAddress: {
+                type: Sequelize.STRING
             },
             email: {
                 type: Sequelize.STRING
