@@ -12,6 +12,7 @@ const APPROVE_STATUS = 2;
 const sequelize = db.sequelize;
 const SUCCESS = "success";
 const REJECT = "reject";
+const REJECT_STATUS = 3;
 
 exports.findAll = (req, res) => {
   const name = req.query.name;
@@ -112,6 +113,7 @@ exports.updateStatusPatient = async (req, res) => {
 
           if (duplicateBookings.length > 0) {
             for (const rejectPatient of duplicateBookings) {
+              await rejectPatient.update({statusId:REJECT_STATUS})
               await sendMailController.sendMail(rejectPatient.email, REJECT, rejectPatient.name)
             }
           }

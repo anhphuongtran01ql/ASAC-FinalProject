@@ -128,9 +128,10 @@ let initWebRoutes = (app) => {
       doctorController.getDoctorAppointmentByDay);
   router.get("/patients-by-doctor-id/:id", [authJwt.verifyToken], doctorController.getAllPatientByDoctorId);
   router.get("/doctors/:id", doctorController.getDoctorById);
-  router.post("/comment", [authJwt.verifyToken], doctorController.createComment);
   router.get("/doctor/:id/comments", [authJwt.verifyToken], commentController.findAllCommentByDoctorId);
   router.get("/appointments/:id/comment", [authJwt.verifyToken], commentController.findCommentByDoctorId);
+  router.put("/appointments/comments/:id", [authJwt.verifyToken], doctorController.editComment);
+  router.get("/comments/:id", [authJwt.verifyToken], doctorController.getCommentById);
 
   return app.use("/", router);
 };

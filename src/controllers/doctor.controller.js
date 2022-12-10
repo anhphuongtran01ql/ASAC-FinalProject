@@ -4,13 +4,10 @@ const Patient = db.Patient;
 const User = db.User;
 const Comment = db.Comment;
 const Appointment = db.Appointment;
+const Op = db.Sequelize.Op;
+const sequelize = db.sequelize;
 const SUCCESS_STATUS = 2;
 const DONE_STATUS = 4;
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-
-const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 exports.getDoctorScheduleByDay = (req, res) => {
     const query = req.query;
@@ -56,24 +53,24 @@ exports.getDoctorAppointmentByDay = (req, res) => {
     }
 };
 
-exports.getAllPatientByDoctorId = (req, res) => {
+exports.getAllPatientByDoctorId = async (req, res) => {
     const doctorId = req.params.id;
-    Patient.findAll({
-        where: {
-            doctorId: doctorId,
-            statusId: SUCCESS_STATUS
-        }
-    })
-        .then((data) => {
-                res.send(data);
-            }
-        )
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving Schedule.",
-            });
-        })
+    try {
+        let query = "SELECT p.*, c.id as commentId " +
+            "from patients p JOIN comments c ON p.doctorId = c.doctorId " +
+            "WHERE p.dateBooking = c.dateBooking " +
+            "and p.timeBooking = c.timeBooking " +
+            "and p.phone = c.phone " +
+            "and p.name = c.name " +
+            "and p.statusId in (2,4)" +
+            "and p.doctorId = " + doctorId;
+        const [results] = await sequelize.query(query);
+        res.send(results);
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Error to get doctors ",
+        });
+    }
 };
 
 exports.getDoctorById = async (req, res) => {
@@ -105,31 +102,42 @@ exports.getDoctorById = async (req, res) => {
     }
 };
 
-exports.createComment = async (req, res) => {
+exports.editComment = async (req, res) => {
+    const id = req.params.id;
     const data = req.body;
     try {
-        let patient = await Patient.findByPk(data.patientId);
-        if (!patient) {
-            res.status(404).send({
+        const comment = await Comment.findByPk(id);
+        if (!comment) {
+            return res.status(404).send({
                 message: "Not found",
             });
-            return;
         }
-        const commentData = {
-            doctorId: data.doctorId,
-            timeBooking: patient.timeBooking,
-            dateBooking: patient.dateBooking,
-            name: patient.name,
-            phone: patient.phone,
-            content: data.content,
-        };
-        const comment = await Comment.create(commentData);
-        //write functon send email here
-        patient.set({
-            statusId: DONE_STATUS
-        })
-        await patient.save()
-        res.send(comment);
+        else {
+            await Comment.update(data, {
+                where: { id: id },
+            })
+            res.send({message:"Update success!"})
+        }
+    } catch (err) {
+        res.status(500).send({
+            message:
+                err.message || "Some error occurred while creating the Property.",
+        });
+    }
+};
+
+exports.getCommentById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const comment = await Comment.findByPk(id);
+        if (!comment) {
+            return res.status(404).send({
+                message: "Not found",
+            });
+        }
+        else {
+            res.send(comment)
+        }
     } catch (err) {
         res.status(500).send({
             message:
